@@ -115,6 +115,7 @@ this is not always the case. Depends on the package content.
 
 ## 3) Create a local repository
 
+We will generate now our repository metadata:
 ```bash
 /usr/bin/luet create-repo --tree "tree" \
 --output $PWD/build \
@@ -125,17 +126,35 @@ this is not always the case. Depends on the package content.
 --meta-compression gzip
 ```
 
+Creating a repository in Luet is about adding metadata and make our spec tree available to other systems running Luet to intall the package. 
+
+- **output**: a path which is where Luet will store the repository metadata.
+- **packages**: a path containing the packages that were built during the build step
+- **name**: Repository name
+- **descr**: Repository description 
+- **tree-compression**: optional, algorithm to use when compression the tree metadata
+- **meta-compression**: optional, algorithm to use when compression the repository metadata
+
 ## 4) Let's test it now!!!
+
+Now we are all set. We have the packages compiled, and we are ready to consume them. We don't want to break our host system, and we want to test this in our private garden :house_with_garden:
+
+Let's create a directory, we will try to install everything there.
 
 ```bash
 # Let's create a directory for our "fake" rootfilesystem
 # it will be populated with a minimal set of packages needed to run 
 # our amazing catclock
 mkdir -p $PWD/rootfs
+```
 
+```bash
 # Let's also create a directory to store our config files
 mkdir -p $PWD/conf
 ```
+
+We will generate now a Luet config. The Luet config is used to read where install things from, and in which directory.
+It also lists the repositories that are used by the client to retrieve packages remotely.
 
 ```bash
 
@@ -143,19 +162,17 @@ mkdir -p $PWD/conf
 # In this way, luet instead installing packages to your host system, will populate the rootfs
 # (note, all the steps are run by a user here, no root required!)
 cat <<EOF > conf/luet-dso-local.yaml
-general:
-  debug: true
 system:
-  rootfs: $PWD/rootfs # ROOTFS FOLDER
-  database_path: "/"
-  database_engine: "boltdb"
+  rootfs: $PWD/rootfs # our "fake" rootfs that we created before
+  database_path: "/" # this is where our Luet DB will live
+  database_engine: "boltdb" # this is the Luet DB engine
 repositories:
    - name: "main"
      type: "disk"
      priority: 3
      enable: true
      urls:
-       - "$PWD/build" # BUILD FOLDER
+       - "$PWD/build" # This is the repository we have created before!
    - name: "sabayonlinux.org"
      description: "Sabayon Linux Repository"
      type: "http"
