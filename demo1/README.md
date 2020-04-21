@@ -8,6 +8,10 @@ We will do this experiment to prove two things:
 1) how we can build a package with Luet and 
 2) two packages from different distributions can (sometime) work together.
 
+## Prerequisites
+
+To build packages with Luet, you must have installed Docker and container-diff, follow our [setup guide](https://luet-lab.github.io/docs/docs/getting-started/#setup) and [build requirements](https://luet-lab.github.io/docs/docs/getting-started/requirements/)
+
 
 ## 1) Create the package
 
