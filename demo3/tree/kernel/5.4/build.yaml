@@ -1,0 +1,15 @@
+prelude:
+- layman -S
+- ACCEPT_LICENSE=* equo i app-arch/unzip
+steps:
+- USE=x86emu emerge sys-apps/v86d
+- emerge sys-kernel/linux-headers
+- emerge =sys-kernel/sabayon-sources-${PACKAGE_VERSION}
+- emerge =sys-kernel/linux-sabayon-${PACKAGE_VERSION}
+includes:
+- ^/boot/.*
+- ^/lib/firmware/.*
+requires:
+  - category: "sys"
+    name: "portage"
+    version: ">=0"

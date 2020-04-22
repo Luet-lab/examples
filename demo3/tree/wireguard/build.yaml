@@ -1,0 +1,10 @@
+steps:
+- | 
+  cp -rfv wireguard-modules-1.0.20200413.ebuild /usr/portage/net-vpn/wireguard-modules/ && \
+  cd /usr/portage/net-vpn/wireguard-modules/ && \
+  ebuild wireguard-modules-1.0.20200413.ebuild digest
+- emerge =${PACKAGE_CATEGORY}/${PACKAGE_NAME}-${PACKAGE_VERSION}
+requires:
+  - category: "kernel"
+    name: "sabayon-linux"
+    version: "5.4.33"
